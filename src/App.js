@@ -3,8 +3,9 @@ import { Formik } from "formik";
 import { createUseStyles } from "react-jss";
 import manAvatar from "./assets/images/man.svg";
 import womanAvatar from "./assets/images/woman.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import Input from "./form-components/Input";
+import Button from "./form-components/Button";
+import SlideToggle from "./form-components/SlideToggle";
 
 const css = {
   colors: {
@@ -72,7 +73,9 @@ const useStyles = createUseStyles({
     transition: "175ms transform ease-in"
   },
   form: {
-    display: "grid"
+    display: "grid",
+    gridGap: "1rem",
+    padding: "0 1rem"
   },
   form__title: {
     margin: "5rem 0 1.25rem 0",
@@ -80,10 +83,8 @@ const useStyles = createUseStyles({
     fontSize: "1.5rem",
     textAlign: "center"
   },
-  form__input: {
-    margin: "1rem",
-    border: "none",
-    padding: "1rem"
+  form__field: {
+    margin: ".25rem 1.25rem"
   }
 });
 
@@ -139,28 +140,44 @@ const FormTest = () => {
             /* and other goodies */
           }) => (
             <form className={styles.form} onSubmit={handleSubmit}>
-              <div>
-                <span>
-                  <FontAwesomeIcon icon={faCoffee} />
-                </span>
-                <input
-                  className={styles.form__input}
-                  placeholder="Your email"
-                />
-              </div>
-              {errors.email && touched.email && errors.email}
-              <input
-                className={styles.form__input}
-                type="password"
-                name="password"
+              <Input
+                type="email"
+                name="email"
+                placeholder="Your email"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.password}
+                value={values.email}
+                errors={errors.email && touched.email && errors.email}
               />
-              {errors.password && touched.password && errors.password}
-              <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button>
+              <Input
+                type="email"
+                name="email"
+                placeholder="Your email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                errors={errors.email && touched.email && errors.email}
+              />
+              <Input
+                type="email"
+                name="email"
+                placeholder="Your email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                errors={errors.email && touched.email && errors.email}
+              />
+              <SlideToggle
+                label="gender"
+                id="gender"
+                options={["male", "female"]}
+              />
+              <SlideToggle
+                label="isChild"
+                id="isChild"
+                options={["adult", "child"]}
+              />
+              <Button type="submit" disabled={isSubmitting} label="Submit" />
             </form>
           )}
         </Formik>
@@ -200,3 +217,26 @@ export default FormTest;
   background: "inherit"
 }
 */
+// <input
+//   className={styles.form__input}
+//   type="password"
+//   name="password"
+//   onChange={handleChange}
+//   onBlur={handleBlur}
+//   value={values.password}
+// />
+// {errors.password && touched.password && errors.password}
+// <button type="submit" disabled={isSubmitting}>
+//   Submit
+// </button>
+// <input
+//   type="password"
+//   name="password"
+//   onChange={handleChange}
+//   onBlur={handleBlur}
+//   value={values.password}
+// />
+// {errors.password && touched.password && errors.password}
+// <button type="submit" disabled={isSubmitting}>
+//   Submit
+// </button>
