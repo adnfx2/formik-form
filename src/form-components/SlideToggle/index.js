@@ -1,8 +1,13 @@
+/* SlideToggle */
 import React from "react";
 import { createUseStyles } from "react-jss";
+import { css } from "../../styles/variables";
 
 const useStyles = createUseStyles({
-  wrapper: {},
+  wrapper: {
+    fontSize: "0.6rem",
+    letterSpacing: "1px"
+  },
   checkbox: {
     display: "none",
     "&:checked + $slide-toggle": {
@@ -17,42 +22,55 @@ const useStyles = createUseStyles({
     padding: ".5rem",
     gridColumnGap: "1rem",
     gridTemplateColumns: "1fr 1fr",
-    background: "#d0d0d0",
     borderRadius: "1.25rem",
     transition: "150ms all ease-in",
     cursor: "pointer",
+    border: `1px solid ${css.colors.gray}`,
     "& span": {
-      textAlign: "center"
+      textAlign: "center",
+      padding: ".25rem .5rem"
     },
     "&::before": {
       position: "absolute",
+      top: "4px",
+      left: "4px",
       content: "''",
-      background: "rgba(0,0,0,.1)",
-      height: "100%",
-      width: "50%",
+      background: css.colors.orange,
+      height: "calc(100% - 8px)",
+      width: "calc(50% - 8px)",
       borderRadius: "1.25rem",
       transition: "150ms all ease-in"
     }
-    /*"&::after": {
-      position: "absolute",
-      content: "''",
-      display: "inline-block",
-      width: "calc(1.25rem - 5px)",
-      height: "calc(1.25rem - 5px)",
-      top: "2.5px",
-      left: "2.5px",
-      borderRadius: "50%",
-      background: "red"
-    }*/
   }
 });
 
-const SlideToggle = ({ id, className, options, label, ...props }) => {
+const SlideToggle = ({
+  id,
+  actionHandler,
+  className,
+  options,
+  value,
+  field,
+  checked,
+  ...props
+}) => {
   const styles = useStyles();
+  const handler = e => {
+    const value = e.target.checked;
+    actionHandler && actionHandler(e, value);
+    field.onChange(e);
+  };
 
   return (
     <div className={`${styles.wrapper} ${className || ""}`.trim()}>
-      <input {...props} className={styles.checkbox} type="checkbox" id={id} />
+      <input
+        {...field}
+        checked={checked}
+        onChange={handler}
+        className={styles.checkbox}
+        type="checkbox"
+        id={id}
+      />
       <label className={styles["slide-toggle"]} htmlFor={id}>
         <span>{options[0]}</span>
         <span>{options[1]}</span>

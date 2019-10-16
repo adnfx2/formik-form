@@ -1,20 +1,22 @@
+/* Input */
 import React from "react";
 import { createUseStyles } from "react-jss";
+import { css } from "../../styles/variables";
 
 const useStyles = createUseStyles({
   input: {
     position: "relative",
-    display: "grid",
+    display: "grid"
   },
   input__text: {
     padding: ".5rem",
     margin: "0 0 1.25rem 0",
     border: "none",
-    borderBottom: "1px solid black",
+    borderBottom: `1px solid ${css.colors.gray}`,
     "&:focus": {
       border: "none",
       outline: "none",
-      borderBottom: "1px solid blue"
+      borderBottom: `1px solid ${css.colors.orange}`
     }
   },
   errors: {
@@ -22,7 +24,7 @@ const useStyles = createUseStyles({
     bottom: 0,
     left: ".75rem",
     fontSize: ".65rem",
-    color: "red"
+    color: css.colors.error
   }
 });
 

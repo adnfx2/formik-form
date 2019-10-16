@@ -1,80 +1,39 @@
-import React from "react";
-import { Formik } from "formik";
+import React, { useState } from "react";
+import { Formik, Field } from "formik";
+import * as Yup from "yup";
 import { createUseStyles } from "react-jss";
-import manAvatar from "./assets/images/man.svg";
-import womanAvatar from "./assets/images/woman.svg";
+import AvatarSlider from "./form-components/AvatarSlider";
 import Input from "./form-components/Input";
 import Button from "./form-components/Button";
 import SlideToggle from "./form-components/SlideToggle";
+import { css } from "./styles/variables";
 
-const css = {
-  colors: {
-    bodyBackground: "#f2f4f8",
-    formBg: "#fff",
-    formShadow: "#bcbcbc"
-  },
-  avatar: {
-    size: "40%",
-    shadowBlur: "8" /*pixels*/,
-    scale: "0.8"
-  }
-};
+const genderOptions = ["female", "male"];
+const isChildOptions = ["child", "adult"];
 
 const useStyles = createUseStyles({
-  "app-body": {
-    minHeight: "100%",
-    height: "100%",
-    background: css.colors.bodyBackground,
-    display: "grid",
-    justifyContent: "center",
-    alignContent: "center"
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyItems: "center",
+    padding: "1rem"
   },
   "form-wrapper": {
     position: "relative",
     display: "grid",
-    minWidth: "300px",
+    maxWidth: "300px",
+    marginTop: css.avatar.size / 2 /*half the height of the avatar*/,
     padding: "1rem",
     background: css.colors.formBg,
-    boxShadow: `0 0 8px ${css.colors.formShadow}`,
+    boxShadow: `0 0 8px ${css.colors.lightGray}`,
     borderRadius: "8px"
   },
-  avatar: {
-    position: "absolute",
-    bottom: "calc(100%)",
-    transform: "translateY(50%)",
-    justifySelf: "center",
-    width: css.avatar.size,
-    height: "0",
-    paddingBottom: css.avatar.size,
-    background: css.colors.formBg,
-    boxShadow: `0 0 ${css.avatar.shadowBlur}px ${css.colors.formShadow}`,
-    borderRadius: "50%",
-    "&::before": {
-      content: "''",
-      position: "absolute",
-      top: "50%",
-      left: `-${css.avatar.shadowBlur}px`,
-      width: `calc(100% + ${2 * css.avatar.shadowBlur}px)`,
-      height: `calc(50% + ${css.avatar.shadowBlur}px)`,
-      background: css.colors.formBg
-    }
-  },
-  avatar__selector: {
-    display: "grid",
-    gridTemplateColumns: "100% 100%",
-    clipPath: "circle(50% at 50% 50%)",
-    "&:hover $avatar__icon": {
-      transform: `translateX(-100%) scale(${css.avatar.scale})`
-    }
-  },
-  avatar__icon: {
-    borderRadius: "50%",
-    transform: `scale(${css.avatar.scale})`,
-    transition: "175ms transform ease-in"
-  },
+
   form: {
     display: "grid",
-    gridGap: "1rem",
+    gridTemplateColumns: "1fr 1fr",
+    gridGap: ".5rem",
     padding: "0 1rem"
   },
   form__title: {
@@ -85,43 +44,49 @@ const useStyles = createUseStyles({
   },
   form__field: {
     margin: ".25rem 1.25rem"
+  },
+  "grid-all-columns": {
+    gridColumn: "1/-1"
+  },
+  "justify-self-end": {
+    justifySelf: "end"
   }
 });
 
+const SignupSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(2, "Invalid title")
+    .max(50, "Too Long!")
+    .required("Required"),
+  firstName: Yup.string()
+    .min(2, "Invalid firstname")
+    .max(50, "Too Long!")
+    .required("Required"),
+  lastName: Yup.string()
+    .min(2, "Invalid lastname")
+    .max(20, "Too Long!")
+    .required("Required")
+});
+
 const FormTest = () => {
+  const [avatar, setAvatar] = useState(false);
   const styles = useStyles();
 
   return (
-    <div className={styles["app-body"]}>
+    <div className={styles["container"]}>
+      <h1>Hello</h1>
       <div className={styles["form-wrapper"]}>
-        <div className={styles.avatar}>
-          <span className={styles.avatar__selector}>
-            <img
-              className={styles.avatar__icon}
-              src={manAvatar}
-              alt="man avatar"
-            />
-            <img
-              className={styles.avatar__icon}
-              src={womanAvatar}
-              alt="woman avatar"
-            />
-          </span>
-        </div>
+        <AvatarSlider value={avatar} />
         <h1 className={styles.form__title}>Anywhere in your app!</h1>
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validate={values => {
-            let errors = {};
-            if (!values.email) {
-              errors.email = "Required";
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = "Invalid email address";
-            }
-            return errors;
+          initialValues={{
+            title: "",
+            firstName: "",
+            lastName: "",
+            gender: false,
+            isChild: false
           }}
+          validationSchema={SignupSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
@@ -141,43 +106,59 @@ const FormTest = () => {
           }) => (
             <form className={styles.form} onSubmit={handleSubmit}>
               <Input
-                type="email"
-                name="email"
-                placeholder="Your email"
+                className={styles["grid-all-columns"]}
+                type="title"
+                name="title"
+                placeholder="Title..."
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
-                errors={errors.email && touched.email && errors.email}
+                value={values.title}
+                errors={errors.title && touched.title && errors.title}
               />
               <Input
-                type="email"
-                name="email"
-                placeholder="Your email"
+                className={styles["grid-all-columns"]}
+                type="firstName"
+                name="firstName"
+                placeholder="Firstname..."
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
-                errors={errors.email && touched.email && errors.email}
+                value={values.firstName}
+                errors={
+                  errors.firstName && touched.firstName && errors.firstName
+                }
               />
               <Input
-                type="email"
-                name="email"
-                placeholder="Your email"
+                className={styles["grid-all-columns"]}
+                type="lastName"
+                name="lastName"
+                placeholder="Lastname..."
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
-                errors={errors.email && touched.email && errors.email}
+                value={values.lastName}
+                errors={errors.lastName && touched.lastName && errors.lastName}
               />
-              <SlideToggle
-                label="gender"
+              <Field
+                name="gender"
                 id="gender"
-                options={["male", "female"]}
+                checked={values.gender}
+                options={genderOptions}
+                actionHandler={(e, value) => setAvatar(value)}
+                component={SlideToggle}
               />
-              <SlideToggle
-                label="isChild"
+              <Field
+                className={styles["justify-self-end"]}
+                name="isChild"
                 id="isChild"
-                options={["adult", "child"]}
+                checked={values.isChild}
+                options={isChildOptions}
+                component={SlideToggle}
               />
-              <Button type="submit" disabled={isSubmitting} label="Submit" />
+              <Button
+                className={styles["grid-all-columns"]}
+                type="submit"
+                disabled={isSubmitting}
+                label="Submit"
+              />
             </form>
           )}
         </Formik>
@@ -186,57 +167,3 @@ const FormTest = () => {
   );
 };
 export default FormTest;
-
-/*
-  <div>
-    Icons made by
-    <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
-    from
-    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-  </div>
-*/
-
-/*
-"&::before": {
-  position: "absolute",
-  content: "''",
-  width: "150%",
-  height: "55%",
-  left: "-25%",
-  top: "50%",
-  background: "inherit"
-},
-"&::after": {
-  position: "absolute",
-  content: "''",
-  width: "100%",
-  height: "100%",
-  left: 0,
-  top: 0,
-  borderRadius: "50%",
-  background: "inherit"
-}
-*/
-// <input
-//   className={styles.form__input}
-//   type="password"
-//   name="password"
-//   onChange={handleChange}
-//   onBlur={handleBlur}
-//   value={values.password}
-// />
-// {errors.password && touched.password && errors.password}
-// <button type="submit" disabled={isSubmitting}>
-//   Submit
-// </button>
-// <input
-//   type="password"
-//   name="password"
-//   onChange={handleChange}
-//   onBlur={handleBlur}
-//   value={values.password}
-// />
-// {errors.password && touched.password && errors.password}
-// <button type="submit" disabled={isSubmitting}>
-//   Submit
-// </button>
