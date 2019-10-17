@@ -6,11 +6,13 @@ import { css } from "../../styles/variables";
 const useStyles = createUseStyles({
   input: {
     position: "relative",
-    display: "grid"
+    display: "grid",
+    gridTemplateRows: "auto .75rem",
+    gridGap: ".75rem"
   },
   input__text: {
     padding: ".5rem",
-    margin: "0 0 1.25rem 0",
+    margin: "0",
     border: "none",
     borderBottom: `1px solid ${css.colors.gray}`,
     "&:focus": {
@@ -20,11 +22,14 @@ const useStyles = createUseStyles({
     }
   },
   errors: {
-    position: "absolute",
-    bottom: 0,
-    left: ".75rem",
     fontSize: ".65rem",
-    color: css.colors.error
+    color: css.colors.error,
+    overflow: "scroll",
+    whiteSpace: "nowrap",
+    scrollbarWidth: "none",
+    [`&::-webkit-scrollbar`]: {
+      display: "none"
+    }
   }
 });
 

@@ -37,7 +37,7 @@ const useStyles = createUseStyles({
     padding: "0 1rem"
   },
   form__title: {
-    margin: "5rem 0 1.25rem 0",
+    margin: "3.5rem 0 1.25rem 0",
     paddingTop: "0",
     fontSize: "1.5rem",
     textAlign: "center"
@@ -53,17 +53,20 @@ const useStyles = createUseStyles({
   }
 });
 
-const SignupSchema = Yup.object().shape({
+const validateSchema = Yup.object().shape({
   title: Yup.string()
-    .min(2, "Invalid title")
-    .max(50, "Too Long!")
+    .matches(/^[a-zA-Z0-9]+$/, "Only alphanumeric characters are allowed")
+    .min(2, "Too short!")
+    .max(50, "Too long!")
     .required("Required"),
   firstName: Yup.string()
-    .min(2, "Invalid firstname")
-    .max(50, "Too Long!")
+    .matches(/^[a-zA-Z0-9]+$/, "Only alphanumeric characters are allowed")
+    .min(2, "Too short!")
+    .max(50, "Too long!")
     .required("Required"),
   lastName: Yup.string()
-    .min(2, "Invalid lastname")
+    .matches(/^[a-zA-Z0-9]+$/, "Only alphanumeric characters are allowed")
+    .min(2, "Too short!")
     .max(20, "Too Long!")
     .required("Required")
 });
@@ -77,7 +80,7 @@ const FormTest = () => {
       <h1>Hello</h1>
       <div className={styles["form-wrapper"]}>
         <AvatarSlider value={avatar} />
-        <h1 className={styles.form__title}>Anywhere in your app!</h1>
+        <h1 className={styles.form__title}>Client Form</h1>
         <Formik
           initialValues={{
             title: "",
@@ -86,7 +89,7 @@ const FormTest = () => {
             gender: false,
             isChild: false
           }}
-          validationSchema={SignupSchema}
+          validationSchema={validateSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
