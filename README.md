@@ -14,4 +14,4 @@ Avatar svgs made by <a href="https://www.flaticon.com/authors/freepik" title="Fr
 
 #### Extras
 
-This form was created for a contest on freelance.com, if you're interested on adding more stuff to this form, please contact me at fx.adrian@gmail.com.
+If you're interested on adding more stuff to this form, please contact me at fx.adrian@gmail.com.
