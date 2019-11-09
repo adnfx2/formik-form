@@ -105,7 +105,6 @@ const FormTest = () => {
             handleBlur,
             handleSubmit,
             isSubmitting
-            /* and other goodies */
           }) => (
             <form className={styles.form} onSubmit={handleSubmit}>
               <Input
