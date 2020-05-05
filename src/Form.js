@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
   "form-wrapper": {
     position: "relative",
     display: "grid",
-    maxWidth: "300px",
+    minWidth: "300px",
     marginTop: css.avatar.size / 2 /*half the height of the avatar*/,
     padding: "1rem",
     background: css.colors.formBg,
